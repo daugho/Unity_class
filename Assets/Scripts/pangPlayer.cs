@@ -8,11 +8,13 @@ public class pangPlayer : MonoBehaviour
         MOVE,
         HITTED
     }
+    private int _currentSpriteIndex;
     [SerializeField]
     private Sprite[] IdleSprites;
     [SerializeField]
     private Sprite[] WalkSprites;
     int playerSpeed = 3;
+    private SpriteRenderer _renderer;
     private STATE _currentState;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -34,9 +36,14 @@ public class pangPlayer : MonoBehaviour
     }
     private void Idle_Action()
     {
-        //Debug.Log("IDLE");
-        _currentState = STATE.IDLE;
         MoveInput();
+        _currentSpriteIndex++;
+        if(_currentSpriteIndex >= IdleSprites.Length)
+        {
+            _currentSpriteIndex = 0;
+        }
+        _renderer.sprite = IdleSprites[_currentSpriteIndex];
+
     }
     private void Move_Action()
     {
