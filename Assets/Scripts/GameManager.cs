@@ -5,40 +5,40 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] 
-    private Button _startButton;
     [SerializeField]
-    private Transform _canVasTrans;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private Button _startButton;
+
+    [SerializeField]
+    private Transform _canvasTrans;
+
     void Start()
     {
         DontDestroyOnLoad(gameObject);
-        _startButton.onClick.AddListener(OnClickStartButton);
+        _startButton.onClick.AddListener(OnStartButtonClicked);
     }
-    private void OnClickStartButton()
+    private void OnStartButtonClicked()
     {
         _startButton.gameObject.SetActive(false);
-        GameObject resGo = Resources.Load<GameObject>("Prefabs/ModeUI");
-        Debug.Log("resGo : "+resGo);
-        GameObject SceanGo = Instantiate(resGo, _canVasTrans, false);
-        ModeUI uiComp = SceanGo.GetComponent<ModeUI>();
-        uiComp.OnClickTimeClickEvent(OnClickTimeAttackMode);
+        GameObject resGo = Resources.Load<GameObject>("Prefab/ModeUI");
+        GameObject sceanGo = Instantiate(resGo,_canvasTrans,false);
+        ModeUI uiComp = sceanGo.GetComponent<ModeUI>();
+        uiComp.AddTimeClickEvent(OnClickTimeAttackMode);
+        uiComp.AddStageClickEvent(OnClickStageMode);
     }
     private void OnClickTimeAttackMode()
     {
-        Debug.Log("Time Attack Mode Clicked");
-        StartCoroutine(LoadSceneAsync("SampleScene"));
+        StartCoroutine(LoadSceneAsync("GameScene2"));
     }
-    private IEnumerator LoadSceneAsync(string sceneName)
+    private IEnumerator LoadSceneAsync(string scene)
     {
-        yield return SceneManager.LoadSceneAsync(sceneName);
-        
-        GameObject player = Resources.Load<GameObject>("Prefabs/PangPlayer");
-        Instantiate(player);
+        yield return SceneManager.LoadSceneAsync(scene);
+
+        GameObject resGo= Resources.Load<GameObject>("Prefab/PangPlayer");
+        Instantiate(resGo);
+    }
+    private void OnClickStageMode()
+    {
+        Debug.Log("Stage Mode");
     }
     // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

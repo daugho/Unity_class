@@ -4,22 +4,18 @@ using UnityEngine.UI;
 
 public class ModeUI : MonoBehaviour
 {
-    [SerializeField]
+    [SerializeField] 
     Button _timeAttackButton;
     [SerializeField]
     Button _stageModeButton;
 
-    public void OnClickTimeClickEvent(UnityAction clickCallback)
+    public void AddTimeClickEvent(UnityAction clickCallback)
     {
         _timeAttackButton.onClick.AddListener(clickCallback);
+
     }
-    public void OnClickStageClickEnent(UnityAction clickCallback)
+    public void AddStageClickEvent(UnityAction clickCallback)
     {
         _stageModeButton.onClick.AddListener(clickCallback);
-    }
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

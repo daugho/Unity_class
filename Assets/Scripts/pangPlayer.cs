@@ -1,7 +1,10 @@
 using UnityEngine;
 
-public class pangPlayer : MonoBehaviour
+public class NewMonoBehaviourScript : MonoBehaviour
 {
+    int _speed = 5; // Speed of the player
+    private float _gravity = -9.81f; // Gravity acceleration
+    private float _velocity = 0f; // Current velocity of the player
     public enum STATE
     {
         IDLE,
@@ -9,70 +12,98 @@ public class pangPlayer : MonoBehaviour
         HITTED
     }
     private int _currentSpriteIndex;
-    [SerializeField]
-    private Sprite[] IdleSprites;
-    [SerializeField]
-    private Sprite[] WalkSprites;
-    int playerSpeed = 3;
+    
+    [SerializeField] private Sprite[] IdleSprites;
+    [SerializeField] private Sprite[] WalkSprites;
+    [SerializeField] private Transform firePoint;
     private SpriteRenderer _renderer;
+
     private STATE _currentState;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Awake()
     {
         _currentState = STATE.IDLE;
+        _renderer = GetComponentInChildren<SpriteRenderer>();
     }
     private void MoveInput()
     {
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            transform.position += Vector3.left * playerSpeed * Time.deltaTime;
+            transform.position += Vector3.left * Time.deltaTime * _speed;
+            _renderer.flipX = true;
             _currentState = STATE.MOVE;
         }
-        if (Input.GetKey(KeyCode.RightArrow))
+        else if (Input.GetKey(KeyCode.RightArrow))
         {
-            transform.position += Vector3.right * playerSpeed * Time.deltaTime;
+            transform.position += Vector3.right * Time.deltaTime * _speed;
+            _renderer.flipX = false;
             _currentState = STATE.MOVE;
         }
+        else
+            _currentState = STATE.IDLE;
     }
-    private void Idle_Action()
+    private float _accTime = 0;
+
+    private void IDLE_Action()
     {
         MoveInput();
-        _currentSpriteIndex++;
-        if(_currentSpriteIndex >= IdleSprites.Length)
+        _accTime += Time.deltaTime;
+        if (_accTime >= 0.2f)
         {
-            _currentSpriteIndex = 0;
-        }
+            _currentSpriteIndex++;
+            if (_currentSpriteIndex >= IdleSprites.Length)
+            {
+                _currentSpriteIndex = 0;
+            }
         _renderer.sprite = IdleSprites[_currentSpriteIndex];
+            _accTime = 0;
+        }
+    }
+    private void MOVE_Action()
+    {
+        MoveInput();
+        _accTime += Time.deltaTime;
+        if (_accTime >= 0.2f)
+        {
+            _currentSpriteIndex++;
+            if (_currentSpriteIndex >= WalkSprites.Length)
+            {
+                _currentSpriteIndex = 0;
+            }
+            _renderer.sprite = WalkSprites[_currentSpriteIndex];
+            _accTime = 0;
+        }
+    }
+    private void HITTED_Action()
+    {
 
     }
-    private void Move_Action()
-    {
-        //Debug.Log("MOVE");
-        _currentState = STATE.MOVE;
-        MoveInput();
-    }
-    // Update is called once per frame
     void Update()
     {
-        switch(_currentState)
+        switch (_currentState)
         {
             case STATE.IDLE:
-                Idle_Action();
+                IDLE_Action();
                 break;
             case STATE.MOVE:
-                Move_Action();
+                MOVE_Action();
                 break;
             case STATE.HITTED:
+                HITTED_Action();
                 break;
         }
         if(Input.GetMouseButtonDown(0))
         {
-            _currentState = STATE.MOVE;
+            FireBullet();
         }
-        if (Input.GetMouseButtonDown(1))
+        else if (Input.GetMouseButtonUp(1))
         {
             _currentState = STATE.HITTED;
         }
-
+    }
+    private void FireBullet()
+    {
+        GameObject bulletObj = BulletPool.Instance.GetBullet();
+        Bullet bullet = bulletObj.GetComponent<Bullet>();
+        bullet.Fire(firePoint.position); // 발사 위치 설정
     }
 }
