@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
+    [SerializeField] private AudioClip[] _popSFX;
+    private AudioSource _audioSource;
+    [SerializeField] private GameObject ballPrefab;
+
     private float _gravity = -9.81f; // 중력 가속도
     private float _velocity = 0f;
     private float _groundY = -3.83f;
@@ -9,9 +13,9 @@ public class Ball : MonoBehaviour
     private float _setSpeed = 2f;
     private bool _isLestMove = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Awake()
     {
-        
+        _audioSource = GetComponent<AudioSource>();
     }
     private void Update()
     {
@@ -49,6 +53,31 @@ public class Ball : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Collision detected with: " + collision.gameObject.name);
+        if (collision.CompareTag("Bullet"))
+        {
+            _audioSource.PlayOneShot(_popSFX[0],1.2f);
+            collision.gameObject.SetActive(false);
+            SplitBall();
+            gameObject.SetActive(false); // Ball 비활성화
+        }
+        else
+            _audioSource.PlayOneShot(_popSFX[1]);
+    }
+    private void SplitBall()
+    {
+        float scaleFactor = 0.5f;
+        Vector3 newScale = transform.localScale * scaleFactor;
+
+        if (newScale.x < 0.2f) return; // 너무 작으면 분열하지 않음
+
+
+        GameObject ballLeft = Instantiate(ballPrefab, transform.position + Vector3.left * 0.5f, Quaternion.identity);
+        ballLeft.transform.localScale = newScale;
+        ballLeft.GetComponent<Ball>()._isLestMove = true;
+
+
+        GameObject ballRight = Instantiate(ballPrefab, transform.position + Vector3.right * 0.5f, Quaternion.identity);
+        ballRight.transform.localScale = newScale;
+        ballRight.GetComponent<Ball>()._isLestMove = false;
     }
 }

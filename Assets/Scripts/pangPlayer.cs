@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class NewMonoBehaviourScript : MonoBehaviour
 {
+    [SerializeField] private AudioClip _fireSFX;
+    private AudioSource _audioSource;
     int _speed = 5; // Speed of the player
     private float _gravity = -9.81f; // Gravity acceleration
     private float _velocity = 0f; // Current velocity of the player
@@ -23,6 +25,7 @@ public class NewMonoBehaviourScript : MonoBehaviour
     {
         _currentState = STATE.IDLE;
         _renderer = GetComponentInChildren<SpriteRenderer>();
+        _audioSource = GetComponent<AudioSource>();
     }
     private void MoveInput()
     {
@@ -105,5 +108,9 @@ public class NewMonoBehaviourScript : MonoBehaviour
         GameObject bulletObj = BulletPool.Instance.GetBullet();
         Bullet bullet = bulletObj.GetComponent<Bullet>();
         bullet.Fire(firePoint.position); // 발사 위치 설정
+        if (_fireSFX != null && _audioSource != null)
+        {
+            _audioSource.PlayOneShot(_fireSFX);
+        }
     }
 }

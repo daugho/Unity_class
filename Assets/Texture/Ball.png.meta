@@ -1,13 +1,13 @@
 fileFormatVersion: 2
-guid: 948bff9c95a8b614880a48a15875a029
+guid: 5b30b26ae822eab42b69b2c396304c91
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2208703988740019828
-    second: Bullet_0
+      213: -3919779002189068522
+    second: Ball_0
   - first:
-      213: 4385501425044414559
-    second: Bullet_1
+      213: -7165607403067095034
+    second: Ball_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -103,13 +103,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Bullet_0
+      name: Ball_0
       rect:
         serializedVersion: 2
-        x: 5
-        y: 11
-        width: 1019
-        height: 1011
+        x: 13
+        y: 3
+        width: 1011
+        height: 1019
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -118,19 +118,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 47656d65394e6ae10800000000000000
-      internalID: 2208703988740019828
+      spriteID: 6174c70f3c52a99c0800000000000000
+      internalID: -3919779002189068522
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Bullet_1
+      name: Ball_1
       rect:
         serializedVersion: 2
-        x: 335
-        y: 174
-        width: 7
+        x: 663
+        y: 928
+        width: 9
         height: 8
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -140,8 +140,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f50edb98f4e6cdc30800000000000000
-      internalID: 4385501425044414559
+      spriteID: 608c64c2806ae8c90800000000000000
+      internalID: -7165607403067095034
       vertices: []
       indices: 
       edges: []
@@ -159,9 +159,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      Bullet_0: 2208703988740019828
-      Bullet_1: 4385501425044414559
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
